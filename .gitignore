@@ -1,0 +1,17 @@
+# Root dependencies
+node_modules/
+
+# Client dependencies
+client/node_modules/
+
+# React production build
+client/dist/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# VS Code settings
+.vscode/
