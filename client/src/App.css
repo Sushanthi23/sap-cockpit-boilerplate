@@ -128,3 +128,124 @@ body {
 .review-btn:hover {
   background: #262a38;
 }
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.back-btn:hover {
+  color: #e4e6eb;
+}
+
+.detail-card {
+  background: #1a1d29;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.detail-header h2 {
+  font-size: 20px;
+}
+
+.detail-card .customer-name {
+  color: #9ca3af;
+  margin-bottom: 20px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.detail-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ai-card {
+  background: #12141c;
+  border: 1px solid #2a2e3d;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.ai-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #818cf8;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.ai-text {
+  font-size: 14px;
+  color: #d1d5db;
+  line-height: 1.5;
+}
+
+.validation-note {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.action-row {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-reject {
+  background: #2a1418;
+  color: #f87171;
+}
+
+.btn-release {
+  background: #10b981;
+  color: #06120c;
+}
