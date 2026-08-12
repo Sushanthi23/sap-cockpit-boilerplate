@@ -35,11 +35,11 @@ Respond with ONLY the one sentence, no preamble.`;
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 
     if (!text) {
-      return res.status(200).json({ summary: 'Unable to generate summary — review manually.' });
+      return res.status(200).json({ summary: 'Unable to generate summary — review manually.', debugError: JSON.stringify(data) });
     }
 
     return res.status(200).json({ summary: text });
-  }  catch (err) {
+  } catch (err) {
     console.error(err);
     return res.status(200).json({ summary: 'AI summary unavailable — review manually.', debugError: err.message });
   }
