@@ -43,19 +43,22 @@ function App() {
   };
 
   const fetchAISummary = (order) => {
-    setAiLoading(true);
-    // Placeholder logic for now — real Gemini call comes next
-    setTimeout(() => {
-      const overBy = order.customer.creditExposure - order.customer.creditLimit;
-      const text =
-        order.customer.averagePaymentDays <= 20
-          ? `Reliable payer, ${order.customer.averagePaymentDays}-day avg payment. Breach of ₹${overBy.toLocaleString()} appears to be a one-off order size issue.`
-          : `Payment history shows ${order.customer.averagePaymentDays}-day avg — slower than typical. Breach of ₹${overBy.toLocaleString()} combined with slow payments suggests caution before release.`;
-      setAiSummary(text);
+  setAiLoading(true);
+  fetch('/api/ai-summary', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ order }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setAiSummary(data.summary);
       setAiLoading(false);
-    }, 600);
-  };
-
+    })
+    .catch(() => {
+      setAiSummary('AI summary unavailable — review manually.');
+      setAiLoading(false);
+    });
+};
   const handleAction = async (action) => {
     setActionLoading(true);
     const res = await fetch(`/api/orders?id=${selectedOrder.orderId}`, {
