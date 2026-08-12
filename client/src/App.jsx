@@ -36,6 +36,27 @@ function App() {
     return 'red';
   };
 
+  const getKPIs = () => {
+    const totalExposure = orders.reduce(
+      (sum, o) => sum + Math.max(0, o.customer.creditExposure - o.customer.creditLimit),
+      0
+    );
+    const now = new Date();
+    const avgHoldHours =
+      orders.length > 0
+        ? orders.reduce((sum, o) => {
+            const blocked = new Date(o.blockedAt);
+            const hours = (now - blocked) / (1000 * 60 * 60);
+            return sum + hours;
+          }, 0) / orders.length
+        : 0;
+
+    return {
+      totalExposure,
+      avgHoldHours: avgHoldHours.toFixed(1),
+    };
+  };
+
   const openOrder = (order) => {
     setSelectedOrder(order);
     setAiSummary('');
@@ -43,22 +64,23 @@ function App() {
   };
 
   const fetchAISummary = (order) => {
-  setAiLoading(true);
-  fetch('/api/ai-summary', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ order }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      setAiSummary(data.summary);
-      setAiLoading(false);
+    setAiLoading(true);
+    fetch('/api/ai-summary', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order }),
     })
-    .catch(() => {
-      setAiSummary('AI summary unavailable — review manually.');
-      setAiLoading(false);
-    });
-};
+      .then((res) => res.json())
+      .then((data) => {
+        setAiSummary(data.summary);
+        setAiLoading(false);
+      })
+      .catch(() => {
+        setAiSummary('AI summary unavailable — review manually.');
+        setAiLoading(false);
+      });
+  };
+
   const handleAction = async (action) => {
     setActionLoading(true);
     const res = await fetch(`/api/orders?id=${selectedOrder.orderId}`, {
@@ -156,12 +178,27 @@ function App() {
   }
 
   // ---- QUEUE SCREEN ----
+  const kpis = getKPIs();
+
   return (
     <div className="app">
       <header className="header">
         <h1>Credit-Blocked Order Queue</h1>
         <p className="subtitle">{orders.length} orders pending review</p>
       </header>
+
+      {orders.length > 0 && (
+        <div className="kpi-bar">
+          <div className="kpi-item">
+            <span className="kpi-value">₹{kpis.totalExposure.toLocaleString()}</span>
+            <span className="kpi-label">Credit exposure pending review</span>
+          </div>
+          <div className="kpi-item">
+            <span className="kpi-value">{kpis.avgHoldHours}h</span>
+            <span className="kpi-label">Avg time blocked</span>
+          </div>
+        </div>
+      )}
 
       <div className="queue-list">
         {orders.map((order) => {
